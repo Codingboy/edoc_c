@@ -1,0 +1,17 @@
+bin/
+obj/
+lib/
+doc/
+.trac/
+
+core
+vgcore.*
+
+src/*~
+include/*~
+src/.*.swp
+include/.*.swp
+
+*.tar.gz
+
+*.log
