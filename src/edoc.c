@@ -29,7 +29,6 @@ int main(int argc, char* argv[])
 			file = argv[i+1];
 			i++;
 		}
-		printf("%s", argv[i]);
 	}
 	if (file == NULL)
 	{
