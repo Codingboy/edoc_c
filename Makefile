@@ -24,7 +24,9 @@ MV=mv -f
 ECHO=@echo
 INSTALL=apt-get install -y
 
-MODULES_=
+#MODULES_=archiver dearchiver compressor decompressor edoc map readbuffer writebuffer encoder decoder sbox pbox spbox
+#MODULES_=archiver edoc readbuffer writebuffer
+MODULES_=edoc
 MODULES=$(addsuffix .o, $(addprefix $(OBJ)/, $(MODULES_)))
 
 .PHONY: help installdep version major minor build clean debug leakcheck profile run trac
