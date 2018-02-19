@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 		int fileLength = strlen(file);
 		int outFileLength = fileLength+5;
 		char outFile[outFileLength+1];
-		strncat(outFile, file, fileLength);
+		strncpy(outFile, file, fileLength);
 		strncat(outFile, ".edoc", 5);
 printf("%s\n", outFile);
 	}
