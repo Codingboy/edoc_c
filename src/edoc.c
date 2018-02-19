@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 		pw = alloca(sizeof(char)*(4096+1));
 		fgets(pw, 4096+1, stdin);
 	}
-	if (mode == 1)
+	if (mode == 0)
 	{
 		//Archiver* archiver = createArchiver();//TODO
 		int fileLength = strlen(file);
