@@ -1,50 +1,62 @@
 #include "version.h"
 #include <stdio.h>
+#include <string.h>
+#include <alloca.h>
 
 int main(int argc, char* argv[])
 {
-	for (int i=0; i<argc; i++)
+	int mode = -1;
+	char* file = NULL;
+	char* pw = NULL;
+	
+	for (int i=1; i<argc; i++)
 	{
+		if (strcmp(argv[i], "-e") == 0)
+		{
+			mode = 0;
+		}
+		else if (strcmp(argv[i], "-d") == 0)
+		{
+			mode = 1;
+		}
+		if (strcmp(argv[i], "-p") == 0 && i+1<argc)
+		{
+			pw = argv[i+1];
+			i++;
+		}
+		if (strcmp(argv[i], "-f") == 0 && i+1<argc)
+		{
+			file = argv[i+1];
+			i++;
+		}
 		printf("%s", argv[i]);
 	}
+	if (file == NULL)
+	{
+		printf("You must specify a file.");
+		return 1;
+	}
+	if (mode == -1)
+	{
+		printf("You must specify a mode.");
+		return 2;
+	}
+	if (pw == NULL)
+	{
+		pw = alloca(sizeof(char)*(4096+1));
+		fgets(pw, 4096+1, stdin);
+	}
+	if (mode == 1)
+	{
+		//Archiver* archiver = createArchiver();//TODO
+		int fileLength = strlen(file);
+		int outFileLength = fileLength+5;
+		char outFile[outFileLength+1];
+		strncat(outFile, file, fileLength);
+		strncat(outFile, ".edoc", 5);
+printf("%s\n", outFile);
+	}
 /*
-	parser.add_argument("-e", "--encode", action="store_true", help="Specify mode: encode")
-	parser.add_argument("-d", "--decode", action="store_true", help="Specify mode: decode")
-	parser.add_argument("-p", "--password", action="store", metavar="password", help="Specify password.")
-	parser.add_argument("-f", "--file", help="Specify file/folder.")
-	parser.add_argument("-t", "--test", action="store_true", help="Runs unittests.")
-	args = vars(parser.parse_args())
-	file = args["file"]
-	while file[-1] == os.sep:
-		file = file[:-1]
-	password = args["password"]
-	encodeMode = args["encode"]
-	testMode = args["test"]
-	root = None
-	progress = 0
-	targetprogress = getSize(file)
-	start = 0
-	pr = None
-	now = time.time()
-	floatingBPS = 0
-	lastProgress = 0
-	if testMode:
-		unittest.main(argv=[sys.argv[0]])
-		input("Press Enter to leave")
-		exit()
-	else:
-		if password is None:
-			password = input("Enter password: ")
-			if useCurses:
-				window = curses.initscr()
-				window.clear()
-				window.refresh()
-		if password is not None:
-			if profiling:
-				pr = cProfile.Profile()
-				pr.enable()
-			start = time.time()
-			if encodeMode:
 				archiver = Archiver(file, True)
 				compressor = Compressor()
 				encoder = Encoder(password)

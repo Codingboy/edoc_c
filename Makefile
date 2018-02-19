@@ -1,5 +1,5 @@
 TARGET=$(BIN)/edoc
-ARGUMENTS=
+ARGUMENTS=-p BlaBlub42 -e -f test.txt
 
 BIN=bin
 SBIN=sbin
@@ -74,7 +74,7 @@ major:
 	git add $(SRC)/*
 	git add $(INCLUDE)/*
 	git commit -a
-	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.hpp);\
+	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.h);\
 	VERSION="v"$$VERSION;\
 	git tag -a $$VERSION -m "major build";\
 	trac-admin ./.trac version add $$VERSION
@@ -89,7 +89,7 @@ minor:
 	git add $(SRC)/*
 	git add $(INCLUDE)/*
 	git commit -a
-	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.hpp);\
+	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.h);\
 	VERSION="v"$$VERSION;\
 	git tag -a $$VERSION -m "minor build";\
 	trac-admin ./.trac version add $$VERSION
@@ -102,7 +102,7 @@ build:
 	git add $(SRC)/*
 	git add $(INCLUDE)/*
 	git commit -am "normal build"
-	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.hpp);\
+	VERSION=$$(python $(SCRIPT)/v.py $(INCLUDE)/version.h);\
 	VERSION="v"$$VERSION;\
 	git tag -a $$VERSION -m "normal build";\
 	trac-admin ./.trac version add $$VERSION
