@@ -33,16 +33,17 @@ int main(int argc, char* argv[])
 	}
 	if (file == NULL)
 	{
-		printf("You must specify a file.");
+		printf("You must specify a file.\n");
 		return 1;
 	}
 	if (mode == -1)
 	{
-		printf("You must specify a mode.");
+		printf("You must specify a mode.\n");
 		return 2;
 	}
 	if (pw == NULL)
 	{
+		printf("Enter password: ");
 		pw = alloca(sizeof(char)*(4096+1));
 		fgets(pw, 4096+1, stdin);
 	}
