@@ -163,6 +163,8 @@ Archiver* createArchiver(char* folder, int folderLength)
 		int filesLength;
 printf("folder: %s\n", folder);
 		char** files = listDir(folder, &filesLength);
+printf("length: %i\n", filesLength);
+printf("files[0]: %s\n", files[0]);
 		for (int i=0; i<filesLength; i++)
 		{
 			char* file = files[i];
