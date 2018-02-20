@@ -26,7 +26,7 @@ INSTALL=apt-get install -y
 
 #MODULES_=archiver dearchiver compressor decompressor edoc map readbuffer writebuffer encoder decoder sbox pbox spbox
 #MODULES_=archiver edoc readbuffer writebuffer
-MODULES_=edoc
+MODULES_=edoc readbuffer writebuffer
 MODULES=$(addsuffix .o, $(addprefix $(OBJ)/, $(MODULES_)))
 
 .PHONY: help installdep version major minor build clean debug leakcheck profile run trac

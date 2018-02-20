@@ -12,13 +12,13 @@ struct sReadBuffer
 	int bufferPos;
 	int pos;
 	int fileSize;
-}
+};
 typedef struct sReadBuffer ReadBuffer;
 
 ReadBuffer* createReadBuffer(const char* inFile, int bufferSize);
 void freeReadBuffer(ReadBuffer* readBuffer);
 void seekReadBuffer(ReadBuffer* readBuffer, int pos);
 uint8_t* readReadBuffer(ReadBuffer* readBuffer, int length, int* returnLength);
-uint8_t* closeReadBuffer(ReadBuffer* readBuffer);
+void closeReadBuffer(ReadBuffer* readBuffer);
 
 #endif

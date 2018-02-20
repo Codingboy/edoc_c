@@ -5,18 +5,55 @@
 #include "archiver.h"
 
 #ifdef __unix__
+	#include <unistd.h>
+	#include <sys/stat.h>
+	#include <sys/types.h>
+#else
+	#include <sys\stat.h>
+#endif
+
+#ifdef __unix__
 #include <dirent.h>
 #include <sys/types.h>
-void list_dir(const char *path)
+char** listDir(char* folder, int* returnLength)
 {
-   DIR *dirptr;
-   struct dirent *dir;
-
-   if ((dirptr=opendir(path)) == NULL)
-      return;
-   while((dir=readdir(dirptr)) != NULL)
-      printf("%s\n",dir->d_name);
-   closedir(dirptr);
+	DIR* dir = opendir(folder);
+	int returnValueSize = 16;
+	int returnValueLength = 0;
+	char** returnValue = malloc(sizeof(char*)*returnValueSize);
+	while (1)
+	{
+		struct dirent* openDir = readdir(dir);
+		if (openDir == NULL)
+		{
+			break;
+		}
+		int subFileSize = openDir->namlen;
+		char* subFile = malloc(sizeof(char)*subFileSize);
+		strcpy(subFile, openDir->d_name);
+		returnValueLength++;
+		if (returnValueLength == returnValueSize)
+		{
+			returnValueSize *= 2;
+			returnValue = realloc(sizeof(char*)*returnValueSize);
+		}
+	}
+	closedir(dir);
+	realloc(returnValue, sizeof(char*)*returnValueLength);
+	*returnLength = returnValueLength;
+	return returnValue;
+}
+int isFile(char* path)
+{
+	struct stat stats;
+	stat(path, &stats);
+	return stats.st_mode & S_IFREG;
+}
+int isDir(char* path)
+{
+	struct stat stats;
+	stat(path, &stats);
+	return stats.st_mode & S_IFDIR;
 }
 
 #elif __WIN32__ || _MSC_VER
@@ -78,7 +115,7 @@ Archiver* createArchiver(char* folder, int folderLength)
 		archiver.folder = NULL;
 		archiver.folderLength = 0;
 	}
-	if (isFile(folder))//TODO isfile
+	if (isFile(folder))
 	{
 		archiver.files = malloc(sizeof(char*)*1);
 		if (index != -1)
@@ -102,14 +139,14 @@ Archiver* createArchiver(char* folder, int folderLength)
 		archiver.files[0] = file;
 		archiver.filesLength = 1;
 	}
-	else if (isDir(folder))//TODO isdir
+	else if (isDir(folder))
 	{
 		int filesLength;
-		char** files = listDir(folder, folderLength, &filesLength);//TODO listDir
+		char** files = listDir(folder, &filesLength);
 		for (int i=0; i<filesLength; i++)
 		{
 			char* file = files[i];
-			int fileLength;//TODO strlen(file)
+			int fileLength = strlen(file);
 			int pathLength = folderLength+1+fileLength;
 			char* path = malloc(sizeof(char)*(pathLength+1));
 			for (int i=0; i<folderLength; i++)
@@ -131,7 +168,13 @@ Archiver* createArchiver(char* folder, int folderLength)
 			newPath[newPathLength] = '\0';
 			free(path);
 			path = NULL;
-			//TODO add newPath to archiver.files
+			archiver.files[archiver.filesLength] = newPath;
+			archiver.filesLength++;
+			if (archiver.filesLength == archiver.filesSize)
+			{
+				archiver.filesSize *= 2;
+				archiver.files = realloc(sizeof(char*)*archiver.filesSize);
+			}
 		}
 		for (int i=0; i<filesLength; i++)
 		{
@@ -148,7 +191,12 @@ Archiver* createArchiver(char* folder, int folderLength)
 
 uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 {
-	int returnValueSize = 1024;//TODO ensure big enough
+#ifdef __unix__
+	char sep = "/";
+#elif __WIN32__ || _MSC_VER
+	char sep = "\\";
+#endif
+	int returnValueSize = 1024*2;//TODO ensure big enough
 	int returnValueLength = 0;
 	uint8_t* returnValue = malloc(sizeof(uint8_t)*returnValueSize);
 	if (archiver.buffer == NULL)
@@ -199,7 +247,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 					{
 						char* subFile = files[j];
 						int subFileLength = strlen(subFile);
-						char* path = malloc(sizeof(char)*(1+subFileLength+1)];
+						char* path = malloc(sizeof(char)*(1+subFileLength+1));
 						path[0] = sep;
 						for (int i=0; i<subFileLength; i++)
 						{
@@ -211,7 +259,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 						if (archiver.filesLength == archiver.filesSize)
 						{
 							archiver.filesSize *= 2;
-							archiver.files = realloc(archiver.filesSize);//TODO
+							archiver.files = realloc(sizeof(char)*archiver.filesSize);
 						}
 						free(files[j]);
 						files[j] = NULL;
@@ -222,7 +270,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 				}
 				else if (isFile(file))
 				{
-					archiver.readBuffer = createReadBuffer(file);//TODO
+					archiver.readBuffer = createReadBuffer(file, archiver.readSize);
 					archiver.file = file;
 					archiver.fileLength = fileLength;
 					returnValue[returnValueLength] = fileLength >> 8;
@@ -233,7 +281,9 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 						returnValue[returnValueLength+i] = file[i];
 					}
 					returnValueLength += fileLength;
-					int fileSize = 0;//TODO
+					struct stat fileStat;
+					stat(file, &fileStat);
+					int fileSize = fileStat.st_size;
 					for (int i=0; i<8; i++)
 					{
 						returnValue[returnValueLength+i] = (fileSize >> (8*(8-1-i))) & 255;
@@ -246,13 +296,14 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 	}
 	else
 	{
-		//TODO implement
-			ba = self.readBuffer.read(self.readSize)
-			if len(ba) == 0:
-				self.readBuffer.close()
-				self.readBuffer = None
-				if self.delete:
-					try:
+		int dataLength;
+		uint8_t* data = readReadBuffer(archiver.readBuffer, archiver.readSize, &dataLength);
+		if (dataLength == 0)
+		{
+			closeReadBuffer(archiver.readBuffer);
+			archiver.readBuffer = NULL;
+			//TODO delete file
+					/*try:
 						os.remove(self.file)
 					except PermissionError as e:
 						getLog().error("could not remove file: "+self.file, e)
@@ -261,7 +312,12 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 						folder = self.file[:index]
 						files = os.listdir(folder)
 						if len(files) == 0:
-							shutil.rmtree(folder)
-				ba = self.read()
+							shutil.rmtree(folder)*/
+			free(data);
+			data = NULL;
+			return readArchiver(archiver, returnLength);
+		}
+		*returnLength = dataLength;
+		return data;
 	}
 }
