@@ -40,6 +40,7 @@ char** listDir(char* folder, int* returnLength)
 			continue;
 		}
 printf("subFile: %s\n", subFile);
+		returnValue[returnValueLength] = subFile;
 		returnValueLength++;
 		if (returnValueLength == returnValueSize)
 		{
