@@ -364,6 +364,10 @@ printf("%s\n", f);
 			data = NULL;
 			return readArchiver(archiver, returnLength);
 		}
+for (int i=0; i<dataLength; i++)
+{
+	printf("%c", data[i]);
+}
 		*returnLength = dataLength;
 		return data;
 	}
