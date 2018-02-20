@@ -265,6 +265,8 @@ printf("%s\n", f);
 				{
 					file[archiver->folderLength+i] = f[i];
 				}
+				free(f);
+				f = NULL;
 				file[archiver->folderLength+fLength] = '\0';
 				if (isDir(file))
 				{
