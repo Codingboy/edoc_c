@@ -256,7 +256,7 @@ printf("%s\n", f);
 				int fLength = strlen(f);
 				archiver->filesLength--;
 				int fileLength = archiver->folderLength+fLength;
-				char file[fileLength+1];
+				char* file = malloc(sizeof(char)*(fileLength+1));
 				for (int i=0; i<archiver->folderLength; i++)
 				{
 					file[i] = archiver->folder[i];
