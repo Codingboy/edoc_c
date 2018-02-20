@@ -154,10 +154,12 @@ Archiver* createArchiver(char* folder, int folderLength)
 		archiver->filesSize = 1;
 		archiver->files = malloc(sizeof(char*)*archiver->filesSize);
 		int filesLength;
+printf("folder: %s\n", folder);
 		char** files = listDir(folder, &filesLength);
 		for (int i=0; i<filesLength; i++)
 		{
 			char* file = files[i];
+printf("file: %s\n", file);
 			int fileLength = strlen(file);
 			int pathLength = folderLength+1+fileLength;
 			char* path = malloc(sizeof(char)*(pathLength+1));
