@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 			int archivedDataLength = 0;
 			uint8_t* archivedData = readArchiver(archiver, &archivedDataLength);
 printf("\n\n%i\n", archivedDataLength);
-for (int i=0; i<archivedData; i++)
+for (int i=0; i<archivedDataLength; i++)
 {
 	printf("%c", archivedData[i]);
 }
