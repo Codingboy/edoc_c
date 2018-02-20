@@ -201,7 +201,34 @@ Archiver* createArchiver(char* folder, int folderLength)
 	archiver->readSize = 1024;
 	return archiver;
 }
-
+void freeArchiver(Archiver* archiver)
+{
+	if (archiver->readBuffer != NULL)
+	{
+		freeReadBuffer(archiver->readBuffer);
+		archiver->readBuffer = NULL;	
+	}
+	if (archiver->file != NULL)
+	{
+		free(archiver->file);
+		archiver->file = NULL;
+	}
+	if (archiver->folder != NULL)
+	{
+		free(archiver->folder);
+		archiver->folder = NULL;
+	}
+	if (archiver->files != NULL)
+	{
+		for (int i=0; i<archiver->filesLength; i++)
+		{
+			free(archiver->files[i]);
+			archiver->files[i] = NULL;
+		}
+		free(archiver->files);
+		archiver->files = NULL;
+	}
+}
 uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 {
 #ifdef __unix__
