@@ -65,11 +65,6 @@ int main(int argc, char* argv[])
 			int breakCondition = 0;
 			int archivedDataLength = 0;
 			uint8_t* archivedData = readArchiver(archiver, &archivedDataLength);
-printf("\n\n%i\n", archivedDataLength);
-for (int i=0; i<archivedDataLength; i++)
-{
-	printf("%c", archivedData[i]);
-}
 			if (archivedDataLength == 0)
 			{
 				free(archivedData);
