@@ -1,7 +1,12 @@
 #include "version.h"
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <alloca.h>
+
+#include "writebuffer.h"
+#include "archiver.h"
 
 int main(int argc, char* argv[])
 {
@@ -48,28 +53,36 @@ int main(int argc, char* argv[])
 	}
 	if (mode == 0)
 	{
-		//Archiver* archiver = createArchiver();//TODO
 		int fileLength = strlen(file);
 		int outFileLength = fileLength+5;
 		char outFile[outFileLength+1];
 		strncpy(outFile, file, fileLength+1);
 		strncat(outFile, ".edoc", 5);
-printf("%s\n", outFile);
+		Archiver* archiver = createArchiver(file, fileLength);
+		WriteBuffer* writeBuffer = createWriteBuffer(outFile, 1024);
+		while (1)
+		{
+			int breakCondition = 0;
+			int archivedDataLength = 0;
+			uint8_t* archivedData = readArchiver(archiver, &archivedDataLength);
+			if (archivedDataLength == 0)
+			{
+				free(archivedData);
+				archivedData = NULL;
+				break;
+			}
+			writeWriteBuffer(writeBuffer, archivedData, archivedDataLength);
+			free(archivedData);
+			archivedData = NULL;
+		}
+		freeArchiver(archiver);
+		archiver = NULL;
+		freeWriteBuffer(writeBuffer);
+		writeBuffer = NULL;
 	}
-/*
-				archiver = Archiver(file, True)
-				compressor = Compressor()
-				encoder = Encoder(password)
-				writebuffer = WriteBuffer(file+".edoc")
-				while True:
-					printProgress()
-					breakcondition = False
-					data = archiver.read()
-					datalen = len(data)
-					progress += datalen
-					if datalen == 0:
-						breakcondition = True
-					data = compressor.compress(data)
-*/	
+	else
+	{
+		
+	}
 	return 0;
 }
