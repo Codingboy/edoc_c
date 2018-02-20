@@ -67,6 +67,8 @@ int main(int argc, char* argv[])
 			uint8_t* archivedData = readArchiver(archiver, &archivedDataLength);
 			if (archivedDataLength == 0)
 			{
+printf("-----------------\n");
+printf("%s", archivedData);
 				free(archivedData);
 				archivedData = NULL;
 				break;
