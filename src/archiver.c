@@ -228,6 +228,8 @@ void freeArchiver(Archiver* archiver)
 		free(archiver->files);
 		archiver->files = NULL;
 	}
+	free(archiver);
+	archiver = NULL;
 }
 uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 {
