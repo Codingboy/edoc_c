@@ -1,5 +1,5 @@
 TARGET=$(BIN)/edoc
-ARGUMENTS=-e -f test/container
+ARGUMENTS=-e -f ./test/container/
 
 BIN=bin
 SBIN=sbin

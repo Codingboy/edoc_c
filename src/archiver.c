@@ -28,11 +28,13 @@ char** listDir(char* folder, int* returnLength)
 		struct dirent* openDir = readdir(dir);
 		if (openDir == NULL)
 		{
+printf("opendir failed\n");
 			break;
 		}
 		int subFileSize = strlen(openDir->d_name)+1;
 		char* subFile = malloc(sizeof(char)*subFileSize);
 		strcpy(subFile, openDir->d_name);
+printf("subFile: %s\n", subFile);
 		returnValueLength++;
 		if (returnValueLength == returnValueSize)
 		{
