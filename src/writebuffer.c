@@ -23,6 +23,10 @@ void freeWriteBuffer(WriteBuffer* writeBuffer)
 {
 	if (writeBuffer->fOut != NULL)
 	{
+		if (writeBuffer->buffer != NULL)
+		{
+			fwrite(writeBuffer->buffer, sizeof(uint8_t), writeBuffer->pos, writeBuffer->fOut);
+		}
 		fclose(writeBuffer->fOut);
 		writeBuffer->fOut = NULL;
 	}
