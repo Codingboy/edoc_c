@@ -251,7 +251,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 			}
 			else
 			{
-				char* f = archiver->files[archiver->filesLength];
+				char* f = archiver->files[archiver->filesLength-1];
 printf("%s\n", f);
 				int fLength = strlen(f);
 				archiver->filesLength--;
