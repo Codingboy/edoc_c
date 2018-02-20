@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 		char outFile[outFileLength+1];
 		strncpy(outFile, file, fileLength+1);
 		strncat(outFile, ".edoc", 5);
+printf("outfile: %s\n", outFile);
 		Archiver* archiver = createArchiver(file, fileLength);
 		WriteBuffer* writeBuffer = createWriteBuffer(outFile, 1024);
 		while (1)
