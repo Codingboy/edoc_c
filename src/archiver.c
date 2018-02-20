@@ -33,7 +33,7 @@ char** listDir(char* folder, int* returnLength)
 		int subFileSize = strlen(openDir->d_name)+1;
 		char* subFile = malloc(sizeof(char)*subFileSize);
 		strcpy(subFile, openDir->d_name);
-		if (strcmp(subFile, ".") == 0 || strcmp(subFile, ".."))
+		if (strcmp(subFile, ".") == 0 || strcmp(subFile, "..") == 0)
 		{
 			free(subFile);
 			subFile = NULL;
