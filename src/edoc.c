@@ -10,6 +10,11 @@
 
 int main(int argc, char* argv[])
 {
+#ifdef __unix__
+	char sep = '/';
+#elif __WIN32__ || _MSC_VER
+	char sep = '\\';
+#endif
 	int mode = -1;
 	char* file = NULL;
 	char* pw = NULL;
@@ -54,6 +59,11 @@ int main(int argc, char* argv[])
 	if (mode == 0)
 	{
 		int fileLength = strlen(file);
+		while (file[fileLength-1] == sep)
+		{
+			file[fileLength-1] = '\0';
+			fileLength--;
+		}
 		int outFileLength = fileLength+5;
 		char outFile[outFileLength+1];
 		strncpy(outFile, file, fileLength+1);
