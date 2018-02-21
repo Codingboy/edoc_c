@@ -202,6 +202,8 @@ Archiver* createArchiver(char* folder, int folderLength)
 		}
 		free(files);
 		files = NULL;
+for (int i=0; i<archiver->filesLength; i++)
+printf("files[%i]: %s\n", i, archiver->files[i]);
 	}
 	archiver->file = NULL;
 	archiver->fileLength = 0;
