@@ -39,7 +39,6 @@ char** listDir(char* folder, int* returnLength)
 			subFile = NULL;
 			continue;
 		}
-printf("subFile: %s\n", subFile);
 		returnValue[returnValueLength] = subFile;
 		returnValueLength++;
 		if (returnValueLength == returnValueSize)
@@ -162,13 +161,10 @@ Archiver* createArchiver(char* folder, int folderLength)
 		archiver->filesSize = 1;
 		archiver->files = malloc(sizeof(char*)*archiver->filesSize);
 		int filesLength;
-printf("folder: %s\n", folder);
 		char** files = listDir(folder, &filesLength);
-printf("length: %i\n", filesLength);
 		for (int i=0; i<filesLength; i++)
 		{
 			char* file = files[i];
-printf("file: %s\n", file);
 			int fileLength = strlen(file);
 			int pathLength = folderLength+1+fileLength;
 			char* path = malloc(sizeof(char)*(pathLength+1));
@@ -263,7 +259,8 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 			else
 			{
 printf("filesLength: %i\n", archiver->filesLength);
-printf("files[%i]: %s\n", archiver->filesLength-1, archiver->files[archiver->filesLength-1]);
+for (int i=0; i<archiver->filesLength; i++)
+printf("files[%i]: %s\n", i, archiver->files[i]);
 				char* f = archiver->files[archiver->filesLength-1];
 				int fLength = strlen(f);
 				archiver->filesLength--;
