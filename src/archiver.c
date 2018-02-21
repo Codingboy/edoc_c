@@ -274,11 +274,11 @@ printf("files[%i]: %s\n", i, archiver->files[i]);
 				{
 					file[archiver->folderLength+i] = f[i];
 				}
+				file[archiver->folderLength+fLength] = '\0';
 printf("---------: %s\n", f);
 printf("---------: %s\n", file);
 				free(f);
 				f = NULL;
-				file[archiver->folderLength+fLength] = '\0';
 				if (isDir(file))
 				{
 					returnValue[returnValueLength] = fileLength >> 8;
