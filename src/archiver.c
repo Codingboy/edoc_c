@@ -264,7 +264,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 			{
 				char* f = archiver->files[archiver->filesLength-1];
 printf("filesLength: %i\n", archiver->filesLength);
-printf("files[%i]: %s\n", archiver->filesLength, archiver->files[archiver->filesLength-1]);
+printf("files[%i]: %s\n", archiver->filesLength-1, archiver->files[archiver->filesLength-1]);
 				int fLength = strlen(f);
 				archiver->filesLength--;
 				int fileLength = archiver->folderLength+fLength;
@@ -280,6 +280,7 @@ printf("files[%i]: %s\n", archiver->filesLength, archiver->files[archiver->files
 				free(f);
 				f = NULL;
 				file[archiver->folderLength+fLength] = '\0';
+printf("---->file: %s\n", file);
 				if (isDir(file))
 				{
 					int folderLength = fileLength-archiver->folderLength;
