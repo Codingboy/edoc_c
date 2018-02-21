@@ -119,7 +119,6 @@ Archiver* createArchiver(char* folder, int folderLength)
 			archiver->folder[i] = folder[i];
 		}
 		archiver->folderLength = index;
-printf("asd: %s", archiver->folder);
 	}
 	else
 	{
@@ -150,6 +149,7 @@ printf("asd: %s", archiver->folder);
 			file[folderLength] = '\0';
 		}
 		archiver->files[0] = file;
+printf("---------: %s", file);
 		archiver->filesLength = 1;
 		if (archiver->filesLength == archiver->filesSize)
 		{
