@@ -119,6 +119,7 @@ Archiver* createArchiver(char* folder, int folderLength)
 			archiver->folder[i] = folder[i];
 		}
 		archiver->folderLength = index;
+printf("asd: %s", archiver->folder);
 	}
 	else
 	{
