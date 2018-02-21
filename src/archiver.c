@@ -202,8 +202,6 @@ Archiver* createArchiver(char* folder, int folderLength)
 		}
 		free(files);
 		files = NULL;
-for (int i=0; i<archiver->filesLength; i++)
-printf("files[%i]: %s\n", i, archiver->files[i]);
 	}
 	archiver->file = NULL;
 	archiver->fileLength = 0;
@@ -308,12 +306,13 @@ printf("-->folder: %s\n", file);
 							path[1+i] = subFile[i];
 						}
 						path[1+subFileLength] = '\0';
+printf("-->path: %s\n", path);
 						archiver->files[archiver->filesLength] = path;
 						archiver->filesLength++;
 						if (archiver->filesLength == archiver->filesSize)
 						{
 							archiver->filesSize *= 2;
-							archiver->files = realloc(archiver->files, sizeof(char)*archiver->filesSize);
+							archiver->files = realloc(archiver->files, sizeof(char*)*archiver->filesSize);
 						}
 						free(files[j]);
 						files[j] = NULL;
