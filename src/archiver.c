@@ -149,7 +149,6 @@ Archiver* createArchiver(char* folder, int folderLength)
 			file[folderLength] = '\0';
 		}
 		archiver->files[0] = file;
-printf("---------: %s", file);
 		archiver->filesLength = 1;
 		if (archiver->filesLength == archiver->filesSize)
 		{
@@ -275,6 +274,8 @@ printf("files[%i]: %s\n", i, archiver->files[i]);
 				{
 					file[archiver->folderLength+i] = f[i];
 				}
+printf("---------: %s\n", f);
+printf("---------: %s\n", file);
 				free(f);
 				f = NULL;
 				file[archiver->folderLength+fLength] = '\0';
