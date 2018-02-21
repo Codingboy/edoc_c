@@ -287,6 +287,8 @@ printf("files[%i]: %s\n", i, archiver->files[i]);
 						returnValue[returnValueLength+i] = file[i];
 					}
 printf("-->folder: %s\n", file);
+printf("-->folder: %s\n", archiver->folder);
+printf("-->folder: %s\n", archiver->file);
 					returnValueLength += fileLength;
 					for (int i=0; i<8; i++)
 					{
