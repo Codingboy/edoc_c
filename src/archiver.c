@@ -322,6 +322,8 @@ printf("-->path: %s\n", path);
 						files[j] = NULL;
 						subFile = NULL;
 					}
+					free(file);
+					file = NULL;
 					free(files);
 					files = NULL;
 				}
