@@ -258,9 +258,6 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 			}
 			else
 			{
-printf("filesLength: %i\n", archiver->filesLength);
-for (int i=0; i<archiver->filesLength; i++)
-printf("files[%i]: %s\n", i, archiver->files[i]);
 				char* f = archiver->files[archiver->filesLength-1];
 				int fLength = strlen(f);
 				archiver->filesLength--;
@@ -275,8 +272,6 @@ printf("files[%i]: %s\n", i, archiver->files[i]);
 					file[archiver->folderLength+i] = f[i];
 				}
 				file[archiver->folderLength+fLength] = '\0';
-printf("---------: %s\n", f);
-printf("---------: %s\n", file);
 				free(f);
 				f = NULL;
 				if (isDir(file))
@@ -288,7 +283,6 @@ printf("---------: %s\n", file);
 					{
 						returnValue[returnValueLength+i] = file[archiver->folderLength+i];
 					}
-printf("-->folder: %s\n", file);
 					returnValueLength += fileLength-archiver->folderLength;
 					for (int i=0; i<8; i++)
 					{
@@ -312,7 +306,6 @@ printf("-->folder: %s\n", file);
 							path[fileLength-archiver->folderLength+1+i] = subFile[i];
 						}
 						path[fileLength-archiver->folderLength+1+subFileLength] = '\0';
-printf("-->path: %s\n", path);
 						archiver->files[archiver->filesLength] = path;
 						archiver->filesLength++;
 						if (archiver->filesLength == archiver->filesSize)
@@ -347,7 +340,6 @@ printf("-->path: %s\n", path);
 					{
 						returnValue[returnValueLength+i] = f[i];
 					}
-printf("-->file: %s\n", f);
 					returnValueLength += fileLength-archiver->folderLength;
 					struct stat fileStat;
 					stat(file, &fileStat);
