@@ -289,11 +289,12 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 					{
 						returnValue[returnValueLength+i] = folder[i];
 					}
+printf("-->dir: %s\n", file);
+printf("-->folder: %s\n", folder);
 					returnValueLength += folderLength;
-					int fileSize = 0;
 					for (int i=0; i<8; i++)
 					{
-						returnValue[returnValueLength+i] = (fileSize >> (8*(8-1-i))) & 255;
+						returnValue[returnValueLength+i] = 0;
 					}
 					returnValueLength += 8;
 					int filesLength;
@@ -335,6 +336,7 @@ uint8_t* readArchiver(Archiver* archiver, int* returnLength)
 					{
 						returnValue[returnValueLength+i] = file[i];
 					}
+printf("-->file: %s\n", file);
 					returnValueLength += fileLength;
 					struct stat fileStat;
 					stat(file, &fileStat);
