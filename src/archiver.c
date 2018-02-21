@@ -360,6 +360,8 @@ printf("-->file: %s\n", file);
 		uint8_t* data = readReadBuffer(archiver->readBuffer, archiver->readSize, &dataLength);
 		if (dataLength == 0)
 		{
+			free(archiver->file);
+			archiver->file = NULL;
 			freeReadBuffer(archiver->readBuffer);
 			archiver->readBuffer = NULL;
 			//TODO delete file
