@@ -334,15 +334,21 @@ printf("-->path: %s\n", path);
 					archiver->readBuffer = createReadBuffer(file, archiver->readSize);
 					archiver->file = file;
 					archiver->fileLength = fileLength;
-					returnValue[returnValueLength] = fileLength >> 8;
-					returnValue[returnValueLength+1] = fileLength & 255;
-					returnValueLength += 2;
-					for (int i=0; i<fileLength; i++)
+					char f[fileLength+1-archiver->folderLength];
+					for (int i=0; i<fileLength-archiver->folderLength; i++)
 					{
-						returnValue[returnValueLength+i] = file[i];
+						f[i] = file[archiver->folderLength+i];
 					}
-printf("-->file: %s\n", file);
-					returnValueLength += fileLength;
+					f[fileLength-archiver->folderLength] = '\0';
+					returnValue[returnValueLength] = (fileLength-archiver->folderLength) >> 8;
+					returnValue[returnValueLength+1] = (fileLength-archiver->folderLength) & 255;
+					returnValueLength += 2;
+					for (int i=0; i<fileLength-archiver->folderLength; i++)
+					{
+						returnValue[returnValueLength+i] = f[i];
+					}
+printf("-->file: %s\n", f);
+					returnValueLength += fileLength-archiver->folderLength;
 					struct stat fileStat;
 					stat(file, &fileStat);
 					int fileSize = fileStat.st_size;
