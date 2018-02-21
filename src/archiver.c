@@ -280,21 +280,17 @@ printf("files[%i]: %s\n", archiver->filesLength-1, archiver->files[archiver->fil
 				free(f);
 				f = NULL;
 				file[archiver->folderLength+fLength] = '\0';
-printf("---->file: %s\n", file);
 				if (isDir(file))
 				{
-					int folderLength = fileLength-archiver->folderLength;
-					char folder[folderLength+1];
-					returnValue[returnValueLength] = folderLength >> 8;
-					returnValue[returnValueLength+1] = folderLength & 255;
+					returnValue[returnValueLength] = fileLength >> 8;
+					returnValue[returnValueLength+1] = fileLength & 255;
 					returnValueLength += 2;
-					for (int i=0; i<folderLength; i++)
+					for (int i=0; i<fileLength; i++)
 					{
-						returnValue[returnValueLength+i] = folder[i];
+						returnValue[returnValueLength+i] = file[i];
 					}
-printf("-->dir: %s\n", file);
-printf("-->folder: %s\n", folder);
-					returnValueLength += folderLength;
+printf("-->folder: %s\n", file);
+					returnValueLength += fileLength;
 					for (int i=0; i<8; i++)
 					{
 						returnValue[returnValueLength+i] = 0;
