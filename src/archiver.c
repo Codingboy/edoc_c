@@ -287,8 +287,6 @@ printf("files[%i]: %s\n", i, archiver->files[i]);
 						returnValue[returnValueLength+i] = file[i];
 					}
 printf("-->folder: %s\n", file);
-printf("-->folder: %s\n", archiver->folder);
-printf("-->folder: %s\n", archiver->file);
 					returnValueLength += fileLength;
 					for (int i=0; i<8; i++)
 					{
@@ -301,14 +299,17 @@ printf("-->folder: %s\n", archiver->file);
 					{
 						char* subFile = files[j];
 						int subFileLength = strlen(subFile);
-						char* path = malloc(sizeof(char)*(fileLength+1+subFileLength+1));
-						strcpy(path, file);
-						path[fileLength] = sep;
+						char* path = malloc(sizeof(char)*(fileLength-archiver->folderLength+1+subFileLength+1));
+						for (int i=0; i<fileLength-archiver->folderLength; i++)
+						{
+							path[i] = file[archiver->folderLength+i];
+						}
+						path[fileLength-archiver->folderLength] = sep;
 						for (int i=0; i<subFileLength; i++)
 						{
-							path[fileLength+1+i] = subFile[i];
+							path[fileLength-archiver->folderLength+1+i] = subFile[i];
 						}
-						path[fileLength+1+subFileLength] = '\0';
+						path[fileLength-archiver->folderLength+1+subFileLength] = '\0';
 printf("-->path: %s\n", path);
 						archiver->files[archiver->filesLength] = path;
 						archiver->filesLength++;
