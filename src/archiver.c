@@ -281,15 +281,15 @@ printf("---------: %s\n", file);
 				f = NULL;
 				if (isDir(file))
 				{
-					returnValue[returnValueLength] = fileLength >> 8;
-					returnValue[returnValueLength+1] = fileLength & 255;
+					returnValue[returnValueLength] = (fileLength-archiver->folderLength) >> 8;
+					returnValue[returnValueLength+1] = (fileLength-archiver->folderLength) & 255;
 					returnValueLength += 2;
-					for (int i=0; i<fileLength; i++)
+					for (int i=0; i<fileLength-archiver->folderLength; i++)
 					{
-						returnValue[returnValueLength+i] = file[i];
+						returnValue[returnValueLength+i] = file[archiver->folderLength+i];
 					}
 printf("-->folder: %s\n", file);
-					returnValueLength += fileLength;
+					returnValueLength += fileLength-archiver->folderLength;
 					for (int i=0; i<8; i++)
 					{
 						returnValue[returnValueLength+i] = 0;
